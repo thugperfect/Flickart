@@ -10,6 +10,7 @@ import {
 import { FaLaptop } from "react-icons/fa";
 import { LuArmchair } from "react-icons/lu";
 import Product from "./Product";
+import Shimmer from "./Shimmer";
 const HomeBody = () => {
   const [products, setProducts] = useState([]);
   const [modifyingProducts, setModifyingProducts] = useState([]);
@@ -106,7 +107,7 @@ const HomeBody = () => {
       <div className=" h-500px bg-white m-3 flex gap-2 flex-wrap justify-center p-3">
         {modifyingProducts.length > 0
           ? modifyingProducts.map((k) => <Product key={k.id} data={k} />)
-          : ""}
+          : <Shimmer/>}
       </div>
       <div className="flex justify-center">
         {modifyingProducts.length === 25 ? (
