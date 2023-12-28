@@ -2,6 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import HomeBody from "./components/HomeBody";
+import ProductBody from "./components/ProductBody";
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
         },
         {
           path: "product/:id",
-          element: <h1>product</h1>,
+          element: <ProductBody/>,
         },
         {
           path: "cart",

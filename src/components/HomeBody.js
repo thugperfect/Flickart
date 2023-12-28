@@ -104,14 +104,17 @@ const HomeBody = () => {
       </div>
       <div className=" h-500px bg-white m-3 flex gap-2 flex-wrap justify-center p-3">
         {modifyingProducts.length > 0
-          ? modifyingProducts.map((k, i) => <Product key={k.id} data={k} />)
+          ? modifyingProducts.map((k) => <Product key={k.id} data={k} />)
           : ""}
       </div>
       <div className="flex justify-center">
         {modifyingProducts.length === 25 ? (
           <div className="flex bg-white">
             {pageArray.map((k) => (
-              <div onClick={()=>pagination(k)} className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer outline outline-1">
+              <div
+                onClick={() => pagination(k)}
+                className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer outline outline-1"
+              >
                 {k}
               </div>
             ))}
