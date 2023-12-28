@@ -6,7 +6,7 @@ const Header = () => {
     <>
       <div className="w-full bg-blue-500 h-[80px] flex justify-center items-center cursor-default">
         <div className="w-[90%] flex items-center">
-        <div className="text-white text-[30px] font-[600] m-3 italic">Flickart</div>
+        <a href="/" className="text-white text-[30px] font-[600] m-3 italic">Flickart</a>
         <div className="flex w-full ">
             <div className="w-[40px] h-[40px] bg-slate-200 rounded-l-lg flex justify-center items-center"><FiSearch className="text-[20px] text-gray-600"/></div>
             <input type="text" className="w-full px-2 bg-slate-200 rounded-r-lg outline-none text-lg" placeholder="Search For Products, Categories and more..." />

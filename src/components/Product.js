@@ -1,8 +1,10 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 const Product = ({data}) => {
   return (
-    <div className='w-[250px] h-[500px] rounded-lg border border-1 border-gray-200'>
+    <Link to={"/product/"+data.id}>
+    <div className='w-[250px] h-[450px] rounded-lg border border-1 border-gray-200'>
     <img src={data.thumbnail} className="w-[250px] h-[250px] rounded-t-lg bg-slate-300" alt={data.name}/>
     <div className="flex flex-col p-2">
     <div className="font-bold flex justify-center m-2">{data.brand}</div>  
@@ -17,6 +19,8 @@ const Product = ({data}) => {
     </div>
     
     </div>
+    </Link>
+    
   )
 }
 
