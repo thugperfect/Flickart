@@ -1,20 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useFetchData from "../utils/customHooks/useFetchData";
 const ProductBody = ({ id }) => {
-  const [product, setProduct] = useState(null);
   const [cart, setCart] = useState("Add to Cart");
   const params = useParams();
   const proId = params.id;
-  const fetchFn = async () => {
-    const res = await fetch("https://dummyjson.com/products/" + proId);
-    const data = await res.json();
-    setProduct(data);
-  };
-  useEffect(() => {
-    fetchFn();
-  }, []);
+  const product = useFetchData("https://dummyjson.com/products/" + proId)
+  
   if (!product) {
     return <></>;
   }
@@ -23,14 +17,14 @@ const ProductBody = ({ id }) => {
       <div className="w-full min-h-[80vh] flex">
         <div className="w-1/3 p-2 flex">
           <div className="">
-            {product.images.map((k) => (
+            {product.images?product.images.map((k,i) => (
               <img
+              key={i}
                 src={k}
                 className="w-[50px] h-[50px] rounded-lg border border-1 border-black m-2"
                 alt=""
-                srcset=""
               />
-            ))}
+            )):""}
           </div>
           <div className=" m-2">
             <img src={product.thumbnail} alt="" />

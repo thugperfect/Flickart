@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import {
   GiSmartphone,
@@ -9,23 +9,27 @@ import {
 } from "react-icons/gi";
 import { FaLaptop } from "react-icons/fa";
 import { LuArmchair } from "react-icons/lu";
-import Product from "./Product";
+import Product, { discountedLabel } from "./Product";
 import Shimmer from "./Shimmer";
+import DataContext from "../utils/DataContext";
+
 const HomeBody = () => {
+
+
   const [products, setProducts] = useState([]);
   const [modifyingProducts, setModifyingProducts] = useState([]);
-  const [filterCount, setFilterCount] = useState(0);
+  const [filterCount, setFilterCount] = useState(1);
+
+  const DiscountProduct = discountedLabel(Product);
   function pagination(no) {
-   
     const changeData = products.filter((k, i) => {
       if (i < no * 25 && i >= (no - 1) * 25) {
         return true;
       }
     });
 
-    console.log(changeData);
     setModifyingProducts(changeData);
-    setFilterCount(filterCount + 1);
+    setFilterCount(no);
   }
   async function fetchData() {
     const res = await fetch("https://dummyjson.com/products?limit=100");
@@ -38,12 +42,6 @@ const HomeBody = () => {
         return true;
       }
     });
-    const cat = data.products.map((k) => k.category);
-    const catdat = cat.filter((k, i) => {
-      return cat.indexOf(k) === i;
-    });
-    console.log(catdat);
-
     console.log(changeData);
     setModifyingProducts(changeData);
   }
@@ -87,7 +85,6 @@ const HomeBody = () => {
     });
     setModifyingProducts(filterCategories);
   };
-
   return (
     <div>
       <div className=" h-[150px] bg-white m-3 flex justify-center items-center">
@@ -96,7 +93,7 @@ const HomeBody = () => {
             <div
               key={i}
               onClick={() => filterFn(k.text)}
-              className="m-2 flex flex-col items-center cursor-pointer"
+              className="m-2  flex flex-col items-center cursor-pointer"
             >
               <div className="">{k.element}</div>
               <div className="">{k.text}</div>
@@ -105,17 +102,31 @@ const HomeBody = () => {
         </div>
       </div>
       <div className=" h-500px bg-white m-3 flex gap-2 flex-wrap justify-center p-3">
-        {modifyingProducts.length > 0
-          ? modifyingProducts.map((k) => <Product key={k.id} data={k} />)
-          : <Shimmer/>}
+        {modifyingProducts.length > 0 ? (
+          modifyingProducts.map((k) =>  (
+            
+            k.discountPercentage > 15 ? (
+              <DiscountProduct key={k.id} data={k} />
+            ) : (
+              <Product key={k.id} data={k} />
+            )
+          ))
+        ) : (
+          <Shimmer />
+        )}
       </div>
       <div className="flex justify-center">
         {modifyingProducts.length === 25 ? (
           <div className="flex bg-white">
             {pageArray.map((k) => (
               <div
+                key={k}
                 onClick={() => pagination(k)}
-                className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer outline outline-1"
+                className={
+                  filterCount === k
+                    ? "w-[40px] bg-slate-500 h-[40px] flex justify-center items-center cursor-pointer outline outline-1"
+                    : "w-[40px] h-[40px] flex justify-center items-center cursor-pointer outline outline-1"
+                }
               >
                 {k}
               </div>

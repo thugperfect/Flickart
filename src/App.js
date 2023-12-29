@@ -1,12 +1,14 @@
 import "./App.css";
+import { lazy,Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import HomeBody from "./components/HomeBody";
-import ProductBody from "./components/ProductBody";
+import { DataProvider } from "./utils/DataContext";
+
 
 function App() {
 
-
+  const ProductBody = lazy(()=>import("./components/ProductBody"))
   const appRouter = createBrowserRouter([
 
     {
@@ -23,7 +25,7 @@ function App() {
         },
         {
           path: "product/:id",
-          element: <ProductBody/>,
+          element: <Suspense fallback={<h1>Loading...</h1>}><ProductBody/></Suspense>,
         },
         {
           path: "cart",
@@ -33,7 +35,7 @@ function App() {
     },
    
   ]);
-  return (<RouterProvider router={appRouter}/>);
+  return (<DataProvider><RouterProvider router={appRouter}/></DataProvider>);
 }
 
 export default App;
