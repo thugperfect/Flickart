@@ -42,7 +42,6 @@ const HomeBody = () => {
         return true;
       }
     });
-    console.log(changeData);
     setModifyingProducts(changeData);
   }
   useEffect(() => {
