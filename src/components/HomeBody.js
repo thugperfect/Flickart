@@ -16,7 +16,7 @@ import DataContext from "../utils/DataContext";
 import { useOnlineStatus } from "../utils/customHooks/useOnlineStatus";
 
 const HomeBody = () => {
-  const { searchText, setSearchText, apiData, dataCategory } =
+  const { searchText } =
     useContext(DataContext);
 
   const onlineStatus = useOnlineStatus();
@@ -48,27 +48,41 @@ const HomeBody = () => {
           return true;
         }
       });
-      setModifyingProducts(changeData);
+      if(!searchText){
+        setModifyingProducts(changeData);
+      }else{
+        const filterSearcharr = data.products.filter((k) => {
+          return (
+            k.category.toLowerCase().includes(searchText.toLowerCase()) ||
+            k.title.toLowerCase().includes(searchText.toLowerCase())
+          );
+        });
+        console.log(filterSearcharr)
+        setModifyingProducts(filterSearcharr)
+      }
+     
     } catch (error) {
       console.log("Error fetching data");
     }
   }
   useEffect(() => {
     fetchData();
-  }, []);
+    filterSearch();
+  }, [searchText]);
+  useEffect(()=>{
+   
+  },[searchText])
 
   function filterSearch() {
-    const filterSearch = products.filter((k) => {
+    const filterSearcharr = products.filter((k) => {
       return (
         k.category.toLowerCase().includes(searchText.toLowerCase()) ||
         k.title.toLowerCase().includes(searchText.toLowerCase())
       );
     });
-    setModifyingProducts(filterSearch)
+    setModifyingProducts(filterSearcharr)
   }
-  useEffect(() => {
-    filterSearch();
-  }, [searchText]);
+ 
   const pageArray = [1, 2, 3, 4];
   const catagoryArr = [
     {

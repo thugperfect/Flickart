@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { BsCart3 } from "react-icons/bs";
 import DataContext from "../utils/DataContext";
+import { useSelector } from "react-redux";
+import { Link} from "react-router-dom";
 const Header = () => {
+  const cartLen = useSelector(c=>c.cart.products)
   const { searchText, setSearchText, apiData,dataCategory } = useContext(DataContext);
-  const [api, setApi] = useState([]);
   const [search, setSearch] = useState("");
   const [category,setCategory] = useState([]);
   const [filteredCategory, setFilteredCategory] = useState([]);
@@ -25,6 +27,7 @@ const Header = () => {
       k.title.toLowerCase().includes(data.toLowerCase())
     );
     setFilteredData(dataTitle);
+    
   };
   function enterToSearch(e){
     if(e.keyCode===13){
@@ -36,9 +39,9 @@ const Header = () => {
     <>
       <div className="w-full bg-blue-500 h-[80px] flex justify-center items-center cursor-default">
         <div className="w-[90%] flex items-center">
-          <a href="/" className="text-white text-[30px] font-[600] m-3 italic">
+          <Link to="/" className="text-white text-[30px] font-[600] m-3 italic">
             Flickart
-          </a>
+          </Link>
           <div className="flex w-full relative">
             <div className="w-[40px] h-[40px] bg-slate-200 rounded-l-lg flex justify-center items-center">
               <FiSearch className="text-[20px] text-gray-600" />
@@ -56,15 +59,15 @@ const Header = () => {
               <div className={(filteredCategory.length+filteredData.length)<=5?"z-10 absolute w-full top-[40px]  ":"z-10 absolute w-full top-[40px] h-[255px] overflow-y-scroll"}>
                 <div className="h-[250px] ">
                 {filteredCategory.map((k) => (
-                  <div key={k} onClick={()=>setContext(k)} className="bg-slate-300 text-black h-[50px] px-4 flex flex-col justify-center border border-b-1">
+                  <Link to={"/"} key={k} onClick={()=>setContext(k)} className="bg-slate-300 text-black h-[50px] px-4 flex flex-col justify-center border border-b-1">
                     {k}
                     <div className="text-xs">Categories</div>
-                  </div>
+                  </Link>
                 ))}
                 {filteredData.map((k) => (
-                  <div key={k.title} onClick={(e)=>setContext(k.title)} className="bg-slate-300 text-black h-[40px] px-4 flex items-center border border-b-1">
+                  <Link to={"/product/"+k.id} key={k.title} onClick={()=>setSearch("")}  className="bg-slate-300 text-black h-[40px] px-4 flex items-center border border-b-1">
                     {k.title}
-                  </div>
+                  </Link>
                 ))}
                 </div>
                
@@ -79,9 +82,9 @@ const Header = () => {
           >
             Search
           </div>
-          <div className="flex justify-center items-center m-3 text-white cursor-pointer">
-            <BsCart3 className="text-white" /> &nbsp;Cart
-          </div>
+          <Link to={"/cart"} className="flex justify-center items-center m-3 text-white cursor-pointer w-[100px] font-bold">
+            <BsCart3 className="text-white " /> &nbsp;Cart ({cartLen.length})
+          </Link>
         </div>
       </div>
     </>

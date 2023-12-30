@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useState } from "react";
 import useFetchData from "../utils/customHooks/useFetchData";
+import { addToCart,removeFromCart } from "../utils/redux/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 const ProductBody = ({ id }) => {
+  const cartItems = useSelector(c=>c.cart.products)
+  const [product,setProduct] = useState(null)
+  const dispatch = useDispatch()
   const [cart, setCart] = useState("Add to Cart");
   const params = useParams();
   const proId = params.id;
-  const product = useFetchData("https://dummyjson.com/products/" + proId)
-  
+
+  async function fetchData() {
+    const res = await fetch("https://dummyjson.com/products/" + proId);
+    const json = await res.json();
+    setProduct(json);
+  }
+  useEffect(()=>{
+    fetchData()
+  },[proId])
+
   if (!product) {
     return <></>;
   }
+  const handleAddCart=(action,payload)=>{
+    console.log(action,payload)
+    setCart('Added to Cart')
+    dispatch(addToCart(payload))
+  }
+ 
   return (
     <div>
       <div className="w-full min-h-[80vh] flex">
@@ -62,16 +81,18 @@ const ProductBody = ({ id }) => {
           <div className="">(Inclusive All taxes)</div>
           <div className="h-[1px] border border-1 border-gray-700"></div>
           <div className={product.stock>10?"text-green-500 my-4":"text-red-500 my-4"}>Only {product.stock} Left</div>
-          <div
-            onClick={() => setCart(cart==="Add to Cart"?"Remove from Cart" :"Add to Cart")}
+          <button
+            onClick={() => handleAddCart(cart,product)}
+            disabled={cart !=="Add to Cart"}
             className={
               cart === "Add to Cart"
+            
                 ? "h-[70px] w-[200px] justify-center flex items-center bg-orange-500 m-2 text-white text-xl cursor-pointer"
                 : "h-[70px] w-[200px] justify-center flex items-center bg-red-500 m-2 text-white text-xl cursor-pointer"
             }
           >
             {cart}
-          </div>
+          </button>
         </div>
       </div>
     </div>
