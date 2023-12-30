@@ -12,6 +12,7 @@ This is an e-commerce website built with React.js, Redux Toolkit, and Context AP
 - State is Completely maintained.
 - Cart functionality allowing addition and removal of items.
 - Debounced search bar for efficient querying.
+- Pagination for Increased Accesiblity
 - Lazy loading to reduce bundle sizes and improve performance.
 - Search filters for product information and categories.
 
