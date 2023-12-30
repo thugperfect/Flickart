@@ -16,20 +16,27 @@ const ProductBody = ({ id }) => {
   async function fetchData() {
     const res = await fetch("https://dummyjson.com/products/" + proId);
     const json = await res.json();
+    
+    const present = cartItems.find(k=>k.id === json.id)
+    if(present){
+      setCart("Added to Cart")
+    }else{
+      setCart("Add to Cart")
+    }
     setProduct(json);
+  }
+  const handleAddCart=(payload)=>{
+    setCart('Added to Cart')
+    dispatch(addToCart(payload))
   }
   useEffect(()=>{
     fetchData()
-  },[proId])
+  },[proId,cartItems])
 
   if (!product) {
     return <></>;
   }
-  const handleAddCart=(action,payload)=>{
-    console.log(action,payload)
-    setCart('Added to Cart')
-    dispatch(addToCart(payload))
-  }
+
  
   return (
     <div>
@@ -82,7 +89,7 @@ const ProductBody = ({ id }) => {
           <div className="h-[1px] border border-1 border-gray-700"></div>
           <div className={product.stock>10?"text-green-500 my-4":"text-red-500 my-4"}>Only {product.stock} Left</div>
           <button
-            onClick={() => handleAddCart(cart,product)}
+            onClick={() => handleAddCart(product)}
             disabled={cart !=="Add to Cart"}
             className={
               cart === "Add to Cart"
