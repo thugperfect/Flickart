@@ -1,6 +1,6 @@
 import "./App.css";
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider,createHashRouter } from "react-router-dom";
+import {  RouterProvider,createHashRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import HomeBody from "./components/HomeBody";
 import { DataProvider } from "./utils/DataContext";

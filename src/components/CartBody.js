@@ -23,7 +23,7 @@ const CartBody = () => {
         <div className="">
           {cartItems.length > 0 ? (
             cartItems.map((k) => (
-              <Link to={"/product/"+k.id}  className="h-[200px]  mx-auto my-2  border border-1  border-gray-300 shadow-md rounded-lg w-full flex items-center p-3 justify-between">
+              <Link key={k.id} to={"/product/"+k.id}  className="h-[200px]  mx-auto my-2  border border-1  border-gray-300 shadow-md rounded-lg w-full flex items-center p-3 justify-between">
                 <div className="flex">
                   <div className="w-[150px] h-[150px]">
                     <img

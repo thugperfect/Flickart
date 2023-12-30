@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import { useState } from "react";
-import useFetchData from "../utils/customHooks/useFetchData";
-import { addToCart,removeFromCart } from "../utils/redux/cartSlice";
+import { addToCart } from "../utils/redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 const ProductBody = () => {
   const [image,setImage] = useState("")
