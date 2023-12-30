@@ -131,7 +131,7 @@ const HomeBody = () => {
   return (
     <div>
       <div className=" h-[150px] bg-white m-3 flex justify-center items-center">
-        <div className="w-[80%] h-full flex justify-center items-center overflow-x-auto">
+        <div className="w-[80%] h-full flex  items-center overflow-x-auto">
           {catagoryArr.map((k, i) => (
             <div
               key={i}
