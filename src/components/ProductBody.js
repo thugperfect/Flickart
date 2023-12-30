@@ -61,6 +61,7 @@ const ProductBody = ({ id }) => {
 
           <div className="">(Inclusive All taxes)</div>
           <div className="h-[1px] border border-1 border-gray-700"></div>
+          <div className={product.stock>10?"text-green-500 my-4":"text-red-500 my-4"}>Only {product.stock} Left</div>
           <div
             onClick={() => setCart(cart==="Add to Cart"?"Remove from Cart" :"Add to Cart")}
             className={

@@ -10,7 +10,8 @@ const Header = () => {
   const [filteredCategory, setFilteredCategory] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const setContext = (e) => {
-    setSearchText(e);
+    setSearch("")
+     setSearchText(e);
   };
   useEffect(()=>{
     setCategory(dataCategory)
@@ -24,8 +25,13 @@ const Header = () => {
       k.title.toLowerCase().includes(data.toLowerCase())
     );
     setFilteredData(dataTitle);
-    console.log(dataCategory, dataTitle);
   };
+  function enterToSearch(e){
+    if(e.keyCode===13){
+      setSearch("")
+      setSearchText(e.target.value)
+    }
+  }
   return (
     <>
       <div className="w-full bg-blue-500 h-[80px] flex justify-center items-center cursor-default">
@@ -40,6 +46,8 @@ const Header = () => {
 
             <input
               onInput={(e) => filterApiData(e.target.value)}
+              onKeyUp={(e)=> enterToSearch(e)}
+              value={search}
               type="text"
               className="w-full px-2 bg-slate-200 rounded-r-lg outline-none text-lg"
               placeholder="Search For Products, Categories and more..."
@@ -48,13 +56,13 @@ const Header = () => {
               <div className={(filteredCategory.length+filteredData.length)<=5?"z-10 absolute w-full top-[40px]  ":"z-10 absolute w-full top-[40px] h-[255px] overflow-y-scroll"}>
                 <div className="h-[250px] ">
                 {filteredCategory.map((k) => (
-                  <div className="bg-slate-300 text-black h-[50px] px-4 flex flex-col justify-center border border-b-1">
+                  <div key={k} onClick={()=>setContext(k)} className="bg-slate-300 text-black h-[50px] px-4 flex flex-col justify-center border border-b-1">
                     {k}
                     <div className="text-xs">Categories</div>
                   </div>
                 ))}
                 {filteredData.map((k) => (
-                  <div className="bg-slate-300 text-black h-[40px] px-4 flex items-center border border-b-1">
+                  <div key={k.title} onClick={(e)=>setContext(k.title)} className="bg-slate-300 text-black h-[40px] px-4 flex items-center border border-b-1">
                     {k.title}
                   </div>
                 ))}

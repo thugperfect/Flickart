@@ -7,15 +7,20 @@ import {
   GiLargeDress,
   GiSunglasses,
 } from "react-icons/gi";
+
 import { FaLaptop } from "react-icons/fa";
 import { LuArmchair } from "react-icons/lu";
 import Product, { discountedLabel } from "./Product";
 import Shimmer from "./Shimmer";
 import DataContext from "../utils/DataContext";
+import { useOnlineStatus } from "../utils/customHooks/useOnlineStatus";
 
 const HomeBody = () => {
+  const { searchText, setSearchText, apiData, dataCategory } =
+    useContext(DataContext);
 
-
+  const onlineStatus = useOnlineStatus();
+  console.log(onlineStatus);
   const [products, setProducts] = useState([]);
   const [modifyingProducts, setModifyingProducts] = useState([]);
   const [filterCount, setFilterCount] = useState(1);
@@ -32,21 +37,38 @@ const HomeBody = () => {
     setFilterCount(no);
   }
   async function fetchData() {
-    const res = await fetch("https://dummyjson.com/products?limit=100");
-    const data = await res.json();
-    const shuffledData = data.products.sort(() => Math.random() - 0.5);
-    setProducts(shuffledData);
+    try {
+      const res = await fetch("https://dummyjson.com/products?limit=100");
+      const data = await res.json();
+      const shuffledData = data.products.sort(() => Math.random() - 0.5);
+      setProducts(shuffledData);
 
-    const changeData = data.products.filter((k, i) => {
-      if (i < 25) {
-        return true;
-      }
-    });
-    setModifyingProducts(changeData);
+      const changeData = data.products.filter((k, i) => {
+        if (i < 25) {
+          return true;
+        }
+      });
+      setModifyingProducts(changeData);
+    } catch (error) {
+      console.log("Error fetching data");
+    }
   }
   useEffect(() => {
     fetchData();
   }, []);
+
+  function filterSearch() {
+    const filterSearch = products.filter((k) => {
+      return (
+        k.category.toLowerCase().includes(searchText.toLowerCase()) ||
+        k.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    });
+    setModifyingProducts(filterSearch)
+  }
+  useEffect(() => {
+    filterSearch();
+  }, [searchText]);
   const pageArray = [1, 2, 3, 4];
   const catagoryArr = [
     {
@@ -102,14 +124,13 @@ const HomeBody = () => {
       </div>
       <div className=" h-500px bg-white m-3 flex gap-2 flex-wrap justify-center p-3">
         {modifyingProducts.length > 0 ? (
-          modifyingProducts.map((k) =>  (
-            
+          modifyingProducts.map((k) =>
             k.discountPercentage > 15 ? (
               <DiscountProduct key={k.id} data={k} />
             ) : (
               <Product key={k.id} data={k} />
             )
-          ))
+          )
         ) : (
           <Shimmer />
         )}
