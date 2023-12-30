@@ -1,6 +1,6 @@
 import "./App.css";
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider,createHashRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import HomeBody from "./components/HomeBody";
 import { DataProvider } from "./utils/DataContext";
@@ -10,7 +10,7 @@ import CartBody from "./components/CartBody";
 
 function App() {
   const ProductBody = lazy(() => import("./components/ProductBody"));
-  const appRouter = createBrowserRouter([
+  const appRouter = createHashRouter([
     {
       path: "/",
       element: <Home />,

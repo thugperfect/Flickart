@@ -5,7 +5,8 @@ import { useState } from "react";
 import useFetchData from "../utils/customHooks/useFetchData";
 import { addToCart,removeFromCart } from "../utils/redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-const ProductBody = ({ id }) => {
+const ProductBody = () => {
+  const [image,setImage] = useState("")
   const cartItems = useSelector(c=>c.cart.products)
   const [product,setProduct] = useState(null)
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ const ProductBody = ({ id }) => {
   const proId = params.id;
 
   async function fetchData() {
+    
     const res = await fetch("https://dummyjson.com/products/" + proId);
     const json = await res.json();
     
@@ -23,6 +25,7 @@ const ProductBody = ({ id }) => {
     }else{
       setCart("Add to Cart")
     }
+    setImage(json.thumbnail)
     setProduct(json);
   }
   const handleAddCart=(payload)=>{
@@ -36,15 +39,18 @@ const ProductBody = ({ id }) => {
   if (!product) {
     return <></>;
   }
-
+  function changeImage(d){
+    setImage(d)
+  }
  
   return (
     <div>
-      <div className="w-full min-h-[80vh] flex">
-        <div className="w-1/3 p-2 flex">
+      <div className="w-full min-h-[80vh] flex flex-col md:flex-row">
+        <div className="md:w-1/3 gap-2 p-2 flex">
           <div className="">
             {product.images?product.images.map((k,i) => (
               <img
+              onMouseEnter={()=>changeImage(k)}
               key={i}
                 src={k}
                 className="w-[50px] h-[50px] rounded-lg border border-1 border-black m-2"
@@ -53,10 +59,10 @@ const ProductBody = ({ id }) => {
             )):""}
           </div>
           <div className=" m-2">
-            <img src={product.thumbnail} alt="" />
+            <img src={image} alt="" />
           </div>
         </div>
-        <div className="w-2/3 p-5">
+        <div className="md:w-2/3 p-5">
           <div className="text-2xl">{product.title}</div>
           <div className="font-bold text-xl">{product.brand}</div>
           <div className="texl-xl">{product.description}</div>

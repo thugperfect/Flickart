@@ -7,21 +7,18 @@ import {
   GiLargeDress,
   GiSunglasses,
 } from "react-icons/gi";
-
+import { FaHome } from "react-icons/fa"
 import { FaLaptop } from "react-icons/fa";
 import { LuArmchair } from "react-icons/lu";
 import Product, { discountedLabel } from "./Product";
 import Shimmer from "./Shimmer";
 import DataContext from "../utils/DataContext";
-import { useOnlineStatus } from "../utils/customHooks/useOnlineStatus";
-
 const HomeBody = () => {
-  const { searchText } =
+  const { searchText,setSearchText } =
     useContext(DataContext);
 
-  const onlineStatus = useOnlineStatus();
-  console.log(onlineStatus);
   const [products, setProducts] = useState([]);
+  const [currentBatch,setCurrentBatch] = useState([]);
   const [modifyingProducts, setModifyingProducts] = useState([]);
   const [filterCount, setFilterCount] = useState(1);
 
@@ -49,6 +46,7 @@ const HomeBody = () => {
         }
       });
       if(!searchText){
+        setCurrentBatch(changeData)
         setModifyingProducts(changeData);
       }else{
         const filterSearcharr = data.products.filter((k) => {
@@ -86,6 +84,10 @@ const HomeBody = () => {
   const pageArray = [1, 2, 3, 4];
   const catagoryArr = [
     {
+      text:"All",
+      element:<FaHome className="text-[40px]"/>
+    },
+    {
       text: "Smartphones",
       element: <GiSmartphone className="text-[40px]" />,
     },
@@ -115,15 +117,21 @@ const HomeBody = () => {
     },
   ];
   const filterFn = (text) => {
-    const filterCategories = products.filter((k) => {
-      return k.category.includes(text.toLowerCase());
-    });
-    setModifyingProducts(filterCategories);
+    if(text!== 'All'){
+      const filterCategories = products.filter((k) => {
+        return k.category.includes(text.toLowerCase());
+      });
+      setModifyingProducts(filterCategories);
+    }else{
+      setModifyingProducts(currentBatch)
+      setSearchText("")
+    }
+   
   };
   return (
     <div>
       <div className=" h-[150px] bg-white m-3 flex justify-center items-center">
-        <div className="w-[80%] h-full flex justify-center items-center">
+        <div className="w-[80%] h-full flex justify-center items-center overflow-x-auto">
           {catagoryArr.map((k, i) => (
             <div
               key={i}

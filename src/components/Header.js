@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
+import { FaShoppingCart } from "react-icons/fa";
 import { BsCart3 } from "react-icons/bs";
 import DataContext from "../utils/DataContext";
 import { useSelector } from "react-redux";
@@ -37,9 +38,9 @@ const Header = () => {
   }
   return (
     <>
-      <div className="w-full bg-blue-500 h-[80px] flex justify-center items-center cursor-default">
-        <div className="w-[90%] flex items-center">
-          <Link to="/" className="text-white text-[30px] font-[600] m-3 italic">
+      <div onClick={()=>setSearch("")} className="w-full bg-blue-500 h-[80px] flex justify-center items-center cursor-default">
+        <div className="w-full md:w-[90%] flex items-center">
+          <Link to="/" className="text-white text-md  md:text-[30px] font-[600] m-3 italic">
             Flickart
           </Link>
           <div className="flex w-full relative">
@@ -65,8 +66,8 @@ const Header = () => {
                   </Link>
                 ))}
                 {filteredData.map((k) => (
-                  <Link to={"/product/"+k.id} key={k.title} onClick={()=>setSearch("")}  className="bg-slate-300 text-black h-[40px] px-4 flex items-center border border-b-1">
-                    {k.title}
+                  <Link to={"/product/"+k.id} key={k.title} onClick={()=>setSearch("")}  className="bg-slate-300 text-xs text-black h-[70px] px-2 flex items-center border border-b-1 gap-2">
+                    <img src={k.thumbnail} className="md:w-[40px] md:h-[40px] w-[20px] h-[20px]" alt="" />{k.title}
                   </Link>
                 ))}
                 </div>
@@ -78,12 +79,14 @@ const Header = () => {
           </div>
           <div
             onClick={() => setContext(search)}
-            className="px-4 py-2 bg-green-500 rounded-lg m-2 text-white font-bold"
+            className="md:px-4 md:py-2 md:text-md px-2 py-2 text-xs bg-green-500 rounded-lg m-2 text-white font-bold"
           >
             Search
           </div>
-          <Link to={"/cart"} className="flex justify-center items-center m-3 text-white cursor-pointer w-[100px] font-bold">
-            <BsCart3 className="text-white " /> &nbsp;Cart ({cartLen.length})
+          <Link to={"/cart"} onClick={()=>setSearch("")} className="flex justify-center items-center  text-white cursor-pointer w-[100px] font-bold">
+            <FaShoppingCart className="text-white " /> 
+            <div className="hidden md:block">&nbsp;Cart</div> 
+            <div className="">({cartLen.length})</div>
           </Link>
         </div>
       </div>
