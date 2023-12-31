@@ -6,10 +6,11 @@ import HomeBody from "./components/HomeBody";
 import { DataProvider } from "./utils/DataContext";
 import { Provider } from "react-redux";
 import store from "./utils/redux/store";
-import CartBody from "./components/CartBody";
+
 
 function App() {
   const ProductBody = lazy(() => import("./components/ProductBody"));
+  const CartBody = lazy(()=>import("./components/CartBody"))
   const appRouter = createHashRouter([
     {
       path: "/",
@@ -25,7 +26,9 @@ function App() {
         },
         {
           path: "cart",
-          element: <CartBody />,
+          element: <Suspense fallback={<h1>Loading...</h1>}>
+          <CartBody />
+        </Suspense>,
         },
         {
           path: "product/:id",
@@ -35,10 +38,7 @@ function App() {
             </Suspense>
           ),
         },
-        {
-          path: "cart",
-          element: <h1>cart</h1>,
-        },
+       
       ],
     },
   ]);

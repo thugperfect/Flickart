@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { FaShoppingCart } from "react-icons/fa";
 import DataContext from "../utils/DataContext";
-import { useSelector } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 const Header = () => {
   const cartLen = useSelector((c) => c.cart.products);
