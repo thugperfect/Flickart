@@ -19,7 +19,6 @@ const CartBody = () => {
   }
   return (
     <div className="mx-auto cursor-default w-full md:w-4/5 lg:w-3/5 min-h-[85vh] bg-gray-50  relative flex justify-center mb-20">
-    <button role="button"> v</button>
       <div className="w-[95%] md:w-4/5 lg:w-3/5 ">
         <div className="">
           {cartItems.length > 0 ? (
